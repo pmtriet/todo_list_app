@@ -10,24 +10,26 @@ void main() {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
 
-  final List<DataItems> items = [
-    DataItems(id: "1", name: "Coding"),
-    DataItems(id: "2", name: "Reading"),
-    DataItems(id: "3", name: "Sleeping"),
-    DataItems(id: "4", name: "Eating"),
-    DataItems(id: "5", name: "Playing"),
-    DataItems(id: "1", name: "Coding"),
-    DataItems(id: "2", name: "Reading"),
-    DataItems(id: "3", name: "Sleeping"),
-    DataItems(id: "4", name: "Eating"),
-    DataItems(id: "5", name: "Playing"),
-  ];
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final List<DataItems> items = [];
+
+  void _handleAddTask(String name) {
+    final newItem = DataItems(id: DateTime.now().toString(), name: name);
+    
+    setState(() {
+      items.add(newItem);
+    });
+  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -55,7 +57,7 @@ class MyApp extends StatelessWidget {
               builder: (
                 BuildContext content,
               ) {
-                return const ModalButton();
+                return ModalButton(addTask: _handleAddTask);
               });
         },
         child: const Icon(

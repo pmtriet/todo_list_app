@@ -1,21 +1,34 @@
 import 'package:flutter/material.dart';
 
 class ModalButton extends StatelessWidget {
-  const ModalButton({
+  ModalButton({
     super.key,
+    required this.addTask,
   });
+  final Function addTask;
+
+  String textValue = "";
+
+  void _handleOnClicked(BuildContext context) {
+    final name = textValue;
+    if (name.isEmpty) return;
+    addTask(name);
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: MediaQuery.of(context).viewInsets,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(
-            horizontal: 20, vertical: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
         child: Column(
           children: [
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              onChanged: (text) {
+                textValue = text;
+              },
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Your task",
               ),
@@ -27,7 +40,7 @@ class ModalButton extends StatelessWidget {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () => _handleOnClicked(context),
                 child: const Text('Add task'),
               ),
             )
